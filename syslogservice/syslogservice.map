@@ -1,0 +1,10 @@
+{
+  "version": 3,
+  "file": "syslogservice.js",
+  "sourceRoot": "../../../../../Applications/WebStorm.app/bin",
+  "sources": [
+    "../../../Users/chh/Documents/insta-view/syslogservice/syslogservice.coffee"
+  ],
+  "names": [],
+  "mappings": ";AAAA;AAAA,EAAA,OAAO,CAAC,MAAR,CAAe,QAAf,EAAyB,EAAzB,CAA4B,CAAC,OAA7B,CAAsC,eAAtC,EAAuD,SAAA,GAAA;AACrD,QAAA,qBAAA;AAAA,IAAA,MAAA,GAAS,OAAA,CAAQ,oCAAR,CAAT,CAAA;AAAA,IACA,aAAA,GAAoB,IAAA,MAAM,CAAC,aAAP,CAAA,CADpB,CAAA;AAAA,IAEA,OAAO,CAAC,GAAR,CAAY,gCAAZ,CAFA,CAAA;AAGA,WAAO,aAAP,CAJqD;EAAA,CAAvD,CAAA,CAAA;AAAA"
+}

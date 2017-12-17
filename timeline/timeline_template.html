@@ -1,0 +1,34 @@
+<div class="timeline-wrap">
+    <div class="timeline-controller-wrapper">
+        <div class="btn-group btn-group-xs">
+            <input class="btn btn-default time-btn" type="button" ng-click="play()" ng-disabled="playing" value="Play">
+            <input class="btn btn-default time-btn" type="button" ng-click="pause()" ng-disabled="!playing" value="Pause">
+            <input class="btn btn-default time-btn" type="button" ng-click="reset()" ng-disabled="!pause" value="Reset">
+        </div>
+
+        <label>Play From</label>
+        <input class="time-text" type="text" ng-model="range.start.date" ng-disabled="true" data-autoclose="1" placeholder="Date" bs-datepicker>
+        <input class="time-text" type="text" ng-model="range.start.time" ng-disabled="true" data-autoclose="1" placeholder="Time" bs-timepicker>
+        <label>To</label>
+        <input class="time-text" type="text" ng-model="range.end.date" ng-disabled="true" data-autoclose="1" placeholder="Date" bs-datepicker>
+        <input class="time-text" type="text" ng-model="range.end.time" ng-disabled="true" data-autoclose="1" placeholder="Time" bs-timepicker>
+
+
+
+        <label ng-show="playing || pause">Current Time</label>
+        <input class="time-text" ng-show="playing || pause" type="text" ng-model="currentTime" ng-disabled="true" placeholder="Date" bs-datepicker>
+        <input class="time-text" ng-show="playing || pause" type="text" ng-model="currentTime" ng-disabled="true" placeholder="Time" bs-timepicker>
+
+        <!--<input type="button" ng-click="playback()" value="Playback">-->
+        <!--
+        <div ng-show="content">
+            <span>Event Time: {{content.start}}</span>
+            <span>Event Description: {{content.content}}</span>
+            <span>IP: {{content.hostip}}</span>
+            <span>Hostname: {{content.hostname}}</span>
+        </div>
+        -->
+    </div>
+    <div class="timeline"></div>
+
+</div>

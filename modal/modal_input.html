@@ -1,0 +1,41 @@
+<div class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" ng-show="title">
+                <button type="button" class="close" ng-click="hide()">&times;</button>
+                <h4 class="modal-title" ng-bind="title">{{title}}</h4>
+            </div>
+            <div class="modal-body">
+                <input type="text" ng-model="$parent.newValue">
+                {{$parent.newValue}}
+                <div ng-hide="$parent.mutinode">
+                    <h4>data:</h4>
+                    name : {{$parent.targetNode.name}}
+                    id : {{$parent.targetNode.id}}
+                    inputConnectors :
+                    <ul>
+                        <li ng-repeat="i in $parent.targetNode.inputConnectors">
+                            {{i.name}}
+                        </li>
+                    </ul>
+                    outputConnectors:
+                    <ul>
+                        <li ng-repeat="i in $parent.targetNode.outputConnectors">
+                            {{i.name}}
+                        </li>
+                    </ul>
+                </div>
+                <div ng-show="$parent.mutinode">
+                    <li ng-repeat="i in $parent.targetNodes track by $index">
+                        {{i}}
+                    </li>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" ng-click="printdata()">Print</button>
+                <button type="button" class="btn btn-default" ng-click="hide()">Cancel</button>
+                <button type="button" class="btn btn-default" ng-click="confirm()">ADD</button>
+            </div>
+        </div>
+    </div>
+</div>

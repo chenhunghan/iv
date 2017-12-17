@@ -1,0 +1,711 @@
+<svg
+        version="1.1"
+        xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
+        ng-mousedown="mouseDown($event)"
+        ng-mousemove="mouseMove($event)"
+        class="draggable-container"
+        ng-attr-width="{{chart.width}}"
+        ng-attr-height="{{chart.height}}"
+        >
+    <defs>
+        <linearGradient x1="49.300617%" y1="-22.5833453%" x2="50.0000477%" y2="100%" id="grayGradient">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="20.5771137%"></stop>
+            <stop stop-color="#EEEEEE" offset="98.0440949%"></stop>
+            <stop stop-color="#CECECE" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="49.300617%" y1="-22.5833453%" x2="50.0000477%" y2="100%" id="redGradient">
+            <stop stop-color="#FFFFFF" offset="0%"></stop>
+            <stop stop-color="#FFFFFF" offset="20.5771137%"></stop>
+            <stop stop-color="rgba(255,0,0,0.0001)" offset="400%"></stop>
+        </linearGradient>
+        <filter id="node-shadow" x="0" y="0" width="250%" height="250%">
+            <feOffset result="offOut" in="SourceGraphic" dx="0" dy="0" />
+            <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.5 0" />
+            <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="2" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+        <filter id="node-mouseover-shadow" x="0" y="0" width="250%" height="250%">
+            <feOffset result="offOut" in="SourceGraphic" dx="2.5" dy="2.5" />
+            <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="2" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+        <filter id="node-selected-shadow" x="0" y="0" width="250%" height="250%">
+            <feOffset result="offOut" in="SourceGraphic" dx="1" dy="1" />
+            <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                           values="0.781 0.994 -0.775 0 0, -0.015 0.731 0.285 0 0, 0.798 -0.257 0.459 0 0, 0 0 0 1 0" />
+            <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="2" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+
+        <filter id="button-shadow" width="250%" height="250%">
+            <feOffset result="offOut" in="SourceGraphic" dx="0.01" dy="0.01" />
+            <feColorMatrix result="matrixOut" in="offOut" type="matrix"
+                           values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.35 0" />
+            <feGaussianBlur result="blurOut" in="matrixOut" stdDeviation="0.1" />
+            <feBlend in="SourceGraphic" in2="blurOut" mode="normal" />
+        </filter>
+
+        <rect id="path-3" x="0" y="1" width="125" height="294" rx="3"></rect>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-5">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-6">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-7">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-8">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-9">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-10">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-11">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-12">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-13">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-14">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-15">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-16">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-17">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-18">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-19">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-20">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-21">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-22">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-23">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-24">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-25">
+            <feOffset dx="0" dy="-1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="1" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0.445339073   0 0 0 0 0.445339073   0 0 0 0 0.445339073  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="2" in="SourceAlpha" result="shadowOffsetOuter2"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter2" result="shadowBlurOuter2"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter2" type="matrix" result="shadowMatrixOuter2"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="shadowMatrixOuter2"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-26">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="1.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-27">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 1   0 0 0 0 1   0 0 0 0 1  0 0 0 0.7 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetInner1" result="shadowBlurInner1"></feGaussianBlur>
+            <feComposite in="shadowBlurInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.155479379   0 0 0 0 0.155479379   0 0 0 0 0.155479379  0 0 0 0.7 0" in="shadowInnerInner1" type="matrix" result="shadowMatrixInner1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+            </feMerge>
+        </filter>
+        <filter x="-50%" y="-50%" width="200%" height="200%" filterUnits="objectBoundingBox" id="filter-28">
+            <feOffset dx="0" dy="1" in="SourceAlpha" result="shadowOffsetOuter1"></feOffset>
+            <feGaussianBlur stdDeviation="0.5" in="shadowOffsetOuter1" result="shadowBlurOuter1"></feGaussianBlur>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0   0 0 0 0 0  0 0 0 0.35 0" in="shadowBlurOuter1" type="matrix" result="shadowMatrixOuter1"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixOuter1"></feMergeNode>
+                <feMergeNode in="SourceGraphic"></feMergeNode>
+            </feMerge>
+        </filter>
+    </defs>
+    <g
+            ng-repeat="node in chart.nodes"
+            ng-mousedown="nodeMouseDown($event, node)"
+            ng-attr-transform="translate({{node.x()}}, {{node.y()}})"
+            >
+        <g
+            ng-if="node.selected()==true"
+                >
+            <g
+                ng-click="addNewInputConnector()"
+                >
+                <rect
+                        ng-attr-width="{{node.width()*0.75}}"
+                        ng-attr-height="{{node.width()*0.37}}"
+                        filter="url('#button-shadow')"
+                        fill="url('#grayGradient')"
+                        fill-rule="evenodd"
+                        x="-43"
+                        y="-46"
+                        rx="2"
+                        ry="2"
+                        >
+                </rect>
+                <text
+                        text-anchor="right"
+                        alignment-baseline="middle"
+                        class="add-connetor-btn-text"
+                        x="-37"
+                        y="-34"
+                        >
+                        +port
+                </text>
+            </g>
+
+            <g
+                    ng-click="deleteSelected()"
+                    >
+                <rect
+                        ng-attr-width="{{node.width()*0.35}}"
+                        ng-attr-height="{{node.width()*0.37}}"
+                        filter="url('#button-shadow')"
+                        fill="url('#grayGradient')"
+                        fill-rule="evenodd"
+                        ng-attr-x="{{node.width()/2-8}}"
+                        y="-46"
+                        rx="2"
+                        ry="2"
+                        >
+                </rect>
+                <text
+                        text-anchor="right"
+                        alignment-baseline="middle"
+                        class="delete-connetor-btn-text"
+                        ng-attr-x="{{node.width()/2-2}}"
+                        y="-34"
+                        >
+                    X
+                </text>
+            </g>
+
+            <g
+                    ng-click="addNewOutputConnector()"
+                    >
+                <rect
+                        ng-attr-width="{{node.width()*0.75}}"
+                        ng-attr-height="{{node.width()*0.37}}"
+                        filter="url('#button-shadow')"
+                        fill="url('#grayGradient')"
+                        fill-rule="evenodd"
+                        ng-attr-x="{{node.width()+3}}"
+                        y="-46"
+                        rx="2"
+                        ry="2"
+                        >
+                </rect>
+                <text
+                        text-anchor="right"
+                        alignment-baseline="middle"
+                        class="add-connetor-btn-text"
+                        ng-attr-x="{{node.width()+9}}"
+                        y="-34"
+                        >
+                    +port
+                </text>
+            </g>
+
+        </g>
+
+        <g
+
+                ng-attr-class="{{node.selected() && 'selected-node-rect' || (node == mouseOverNode && 'mouseover-node-rect' || 'node-rect')}}"
+                ng-attr-filter="url({{node.selected() && '#node-selected-shadow' || (node == mouseOverNode && '#node-mouseover-shadow' || '#node-shadow')}})"
+                >
+                    <rect
+                            ng-attr-width="{{node.width()}}"
+                            ng-attr-height="{{node.height()}}"
+                            ng-attr-fill="url({{node.nodeAlive() && '#grayGradient' || '#redGradient' }})"
+                            fill-rule="evenodd"
+                            >
+                    </rect>
+        </g>
+        <g
+                ng-repeat="connector in node.inputConnectors"
+                ng-mousedown="connectorMouseDown($event, node, connector, $index, true)"
+                class="input-connector"
+                >
+            <circle
+                    ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
+                    ng-attr-r="{{connectorSize}}"
+                    ng-attr-cx="{{connector.x()}}"
+                    ng-attr-cy="{{connector.y()}}"
+                    >
+            </circle>
+            <circle
+                    ng-attr-r="{{connectorSize*0.6}}"
+                    ng-attr-cx="{{connector.x()}}"
+                    ng-attr-cy="{{connector.y()}}"
+                    ng-attr-class="{{connector.linked() && 'connector-inner-circle' || 'linkdown-connector-inner-circle' }}"
+                    >
+            </circle>
+            <text
+                    text-anchor="right"
+                    alignment-baseline="middle"
+                    class="connetor-name"
+                    >
+                <tspan
+                        ng-attr-x="{{connector.x()-connectorSize/2}}"
+                        ng-attr-y="{{connector.y()-13}}"
+                        >
+                    {{connector.name()}}
+                </tspan>
+            </text>
+
+        </g>
+        <g
+                ng-repeat="connector in node.outputConnectors"
+                ng-mousedown="connectorMouseDown($event, node, connector, $index, false)"
+                class="output-connector"
+                >
+            <circle
+                    ng-attr-class="{{connector == mouseOverConnector && 'mouseover-connector-circle' || 'connector-circle'}}"
+                    ng-attr-r="{{connectorSize}}"
+                    ng-attr-cx="{{connector.x()}}"
+                    ng-attr-cy="{{connector.y()}}"
+                    >
+            </circle>
+            <circle
+                    ng-attr-r="{{connectorSize*0.7}}"
+                    ng-attr-cx="{{connector.x()}}"
+                    ng-attr-cy="{{connector.y()}}"
+                    ng-attr-class="{{connector.linked() && 'connector-inner-circle' || 'linkdown-connector-inner-circle'}}"
+                    >
+            </circle>
+            <text
+                    text-anchor="right"
+                    alignment-baseline="middle"
+                    class="connetor-name"
+                    >
+                <tspan
+                        ng-attr-x="{{connector.x()-connectorSize/2}}"
+                        ng-attr-y="{{connector.y()-13}}"
+                        >
+                    {{connector.name()}}
+                </tspan>
+            </text>
+
+        </g>
+        <text
+                class="node-name"
+        >
+                    <tspan
+                            x="0"
+                            y="-6"
+                            >
+                        {{node.name()}}
+                    </tspan>
+        </text>
+        <g
+                class="node-status-sign">
+
+            <path
+                    d="M11.1948529,9.01102941 C10.6580882,9.93014706 9.93014706,10.6580882 9.01102941,11.1948529 C8.09191176,11.7316176 7.08823529,12 6,12 C4.91176471,12 3.90808824,11.7316176 2.98897059,11.1948529 C2.06985294,10.6580882 1.34191176,9.93014706 0.805147059,9.01102941 C0.268382353,8.09191176 0,7.08823529 0,6 C0,4.91176471 0.268382353,3.90808824 0.805147059,2.98897059 C1.34191176,2.06985294 2.06985294,1.34191176 2.98897059,0.805147059 C3.90808824,0.268382353 4.91176471,0 6,0 C7.08823529,0 8.09191176,0.268382353 9.01102941,0.805147059 C9.93014706,1.34191176 10.6580882,2.06985294 11.1948529,2.98897059 C11.7316176,3.90808824 12,4.91176471 12,6 C12,7.08823529 11.7316176,8.09191176 11.1948529,9.01102941 Z M4.82362233,8.37814565 L7.18909505,8.37814565 L7.18909505,10.4697829 L4.82362233,10.4697829 L4.82362233,8.37814565 Z M4.73622801,1.19999695 L7.27066308,1.19999695 L7.27066308,3.14597697 L6.78125493,7.05541588 L5.21398359,7.05541588 L4.73622801,3.14597697 L4.73622801,1.19999695 Z"
+                    ng-if="node.nodeWarning()==true"
+                    class="node-warning-sign"
+                    fill-rule="evenodd"
+                    >
+            </path>
+            <path
+                    d="M11.1948529,9.01102941 C10.6580882,9.93014706 9.93014706,10.6580882 9.01102941,11.1948529 C8.09191176,11.7316176 7.08823529,12 6,12 C4.91176471,12 3.90808824,11.7316176 2.98897059,11.1948529 C2.06985294,10.6580882 1.34191176,9.93014706 0.805147059,9.01102941 C0.268382353,8.09191176 0,7.08823529 0,6 C0,4.91176471 0.268382353,3.90808824 0.805147059,2.98897059 C1.34191176,2.06985294 2.06985294,1.34191176 2.98897059,0.805147059 C3.90808824,0.268382353 4.91176471,0 6,0 C7.08823529,0 8.09191176,0.268382353 9.01102941,0.805147059 C9.93014706,1.34191176 10.6580882,2.06985294 11.1948529,2.98897059 C11.7316176,3.90808824 12,4.91176471 12,6 C12,7.08823529 11.7316176,8.09191176 11.1948529,9.01102941 Z M6,10 C8.209139,10 10,8.209139 10,6 C10,3.790861 8.209139,2 6,2 C3.790861,2 2,3.790861 2,6 C2,8.209139 3.790861,10 6,10 Z"
+                    class="node-alive-sign"
+                    ng-if="node.nodeAlive()==true"
+                    >
+            </path>
+            <path
+                    d="M9.8820059,3.84070796 L8.15929204,2.1179941 C8.0806293,2.03933137 7.99016716,2 7.8879056,2 C7.78564405,2 7.69518191,2.03933137 7.61651917,2.1179941 L6,3.73451327 L4.38348083,2.1179941 C4.30481809,2.03933137 4.21435595,2 4.1120944,2 C4.00983284,2 3.9193707,2.03933137 3.84070796,2.1179941 L2.1179941,3.84070796 C2.03933137,3.9193707 2,4.00983284 2,4.1120944 C2,4.21435595 2.03933137,4.30481809 2.1179941,4.38348083 L3.73451327,6 L2.1179941,7.61651917 C2.03933137,7.69518191 2,7.78564405 2,7.8879056 C2,7.99016716 2.03933137,8.0806293 2.1179941,8.15929204 L3.84070796,9.8820059 C3.9193707,9.96066863 4.00983284,10 4.1120944,10 C4.21435595,10 4.30481809,9.96066863 4.38348083,9.8820059 L6,8.26548673 L7.61651917,9.8820059 C7.69518191,9.96066863 7.78564405,10 7.8879056,10 C7.99016716,10 8.0806293,9.96066863 8.15929204,9.8820059 L9.8820059,8.15929204 C9.96066863,8.0806293 10,7.99016716 10,7.8879056 C10,7.78564405 9.96066863,7.69518191 9.8820059,7.61651917 L8.26548673,6 L9.8820059,4.38348083 C9.96066863,4.30481809 10,4.21435595 10,4.1120944 C10,4.00983284 9.96066863,3.9193707 9.8820059,3.84070796 L9.8820059,3.84070796 Z M12,6 C12,7.08823529 11.7316176,8.09191176 11.1948529,9.01102941 C10.6580882,9.93014706 9.93014706,10.6580882 9.01102941,11.1948529 C8.09191176,11.7316176 7.08823529,12 6,12 C4.91176471,12 3.90808824,11.7316176 2.98897059,11.1948529 C2.06985294,10.6580882 1.34191176,9.93014706 0.805147059,9.01102941 C0.268382353,8.09191176 0,7.08823529 0,6 C0,4.91176471 0.268382353,3.90808824 0.805147059,2.98897059 C1.34191176,2.06985294 2.06985294,1.34191176 2.98897059,0.805147059 C3.90808824,0.268382353 4.91176471,0 6,0 C7.08823529,0 8.09191176,0.268382353 9.01102941,0.805147059 C9.93014706,1.34191176 10.6580882,2.06985294 11.1948529,2.98897059 C11.7316176,3.90808824 12,4.91176471 12,6 L12,6 Z"
+                    ng-if="node.nodeAlive()==false"
+                    class="node-dead-sign"
+                    >
+            </path>
+        </g>
+    </g>
+
+    <g
+                ng-repeat="connection in chart.connections track by $index"
+                class="connection"
+                >
+            <path
+                    ng-mousedown="connectionMouseDown($event, connection)"
+                    ng-attr-class="{{
+                        connection.selected() && 'selected-connection-line' ||
+                        (connection == mouseOverConnection && 'mouseover-connection-line' ||
+                        (connection.connectionAlive() && 'connection-alive connection-line' || 'connection-dead connection-line')
+                        )}}"
+                    ng-attr-d="M {{connection.sourceCoordX()}}, {{connection.sourceCoordY()}}
+                     C {{connection.sourceTangentX()}}, {{connection.sourceTangentY()}}
+                       {{connection.destTangentX()}}, {{connection.destTangentY()}}
+                       {{connection.destCoordX()}}, {{connection.destCoordY()}}"
+                    ng-attr-stroke-opacity="{{connection.opacity}}"
+                    >
+            </path>
+            <g
+                    ng-if="connection.connectionAlive()!==true"
+                    ng-attr-transform="translate({{connection.sourceTangentX()}}, {{(connection.sourceCoordY() + connection.destCoordY())/2}})"
+
+                    >
+                <!--<path-->
+                        <!--d="M9.8820059,3.84070796 L8.15929204,2.1179941 C8.0806293,2.03933137 7.99016716,2 7.8879056,2 C7.78564405,2 7.69518191,2.03933137 7.61651917,2.1179941 L6,3.73451327 L4.38348083,2.1179941 C4.30481809,2.03933137 4.21435595,2 4.1120944,2 C4.00983284,2 3.9193707,2.03933137 3.84070796,2.1179941 L2.1179941,3.84070796 C2.03933137,3.9193707 2,4.00983284 2,4.1120944 C2,4.21435595 2.03933137,4.30481809 2.1179941,4.38348083 L3.73451327,6 L2.1179941,7.61651917 C2.03933137,7.69518191 2,7.78564405 2,7.8879056 C2,7.99016716 2.03933137,8.0806293 2.1179941,8.15929204 L3.84070796,9.8820059 C3.9193707,9.96066863 4.00983284,10 4.1120944,10 C4.21435595,10 4.30481809,9.96066863 4.38348083,9.8820059 L6,8.26548673 L7.61651917,9.8820059 C7.69518191,9.96066863 7.78564405,10 7.8879056,10 C7.99016716,10 8.0806293,9.96066863 8.15929204,9.8820059 L9.8820059,8.15929204 C9.96066863,8.0806293 10,7.99016716 10,7.8879056 C10,7.78564405 9.96066863,7.69518191 9.8820059,7.61651917 L8.26548673,6 L9.8820059,4.38348083 C9.96066863,4.30481809 10,4.21435595 10,4.1120944 C10,4.00983284 9.96066863,3.9193707 9.8820059,3.84070796 L9.8820059,3.84070796 Z M12,6 C12,7.08823529 11.7316176,8.09191176 11.1948529,9.01102941 C10.6580882,9.93014706 9.93014706,10.6580882 9.01102941,11.1948529 C8.09191176,11.7316176 7.08823529,12 6,12 C4.91176471,12 3.90808824,11.7316176 2.98897059,11.1948529 C2.06985294,10.6580882 1.34191176,9.93014706 0.805147059,9.01102941 C0.268382353,8.09191176 0,7.08823529 0,6 C0,4.91176471 0.268382353,3.90808824 0.805147059,2.98897059 C1.34191176,2.06985294 2.06985294,1.34191176 2.98897059,0.805147059 C3.90808824,0.268382353 4.91176471,0 6,0 C7.08823529,0 8.09191176,0.268382353 9.01102941,0.805147059 C9.93014706,1.34191176 10.6580882,2.06985294 11.1948529,2.98897059 C11.7316176,3.90808824 12,4.91176471 12,6 L12,6 Z"-->
+                        <!--class="connection-dead-sign">-->
+                <!--</path>-->
+                <text
+                        class="connection-dead-text"
+                        >
+                    <tspan y="-10" x="-20">disconnected</tspan>
+
+                </text>
+            </g>
+            <g
+                    ng-if="connection.connectionNotBlocked()!==true"
+                    ng-attr-transform="translate({{connection.sourceTangentX()}}, {{(connection.sourceCoordY() + connection.destCoordY())/2}})"
+                    >
+                <path d="M7.8423913,2.08413462 L7.8423913,3.45432692 C7.8423913,3.52163462 7.82120959,3.578125 7.77884615,3.62379808 C7.73648272,3.66947115 7.6863155,3.69230769 7.62834448,3.69230769 L6.34406355,3.69230769 C6.28609253,3.69230769 6.23592531,3.66947115 6.19356187,3.62379808 C6.15119844,3.578125 6.13001672,3.52163462 6.13001672,3.45432692 L6.13001672,2.08413462 C6.13001672,2.01682692 6.15119844,1.96033654 6.19356187,1.91466346 C6.23592531,1.86899038 6.28609253,1.84615385 6.34406355,1.84615385 L7.62834448,1.84615385 C7.6863155,1.84615385 7.73648272,1.86899038 7.77884615,1.91466346 C7.82120959,1.96033654 7.8423913,2.01682692 7.8423913,2.08413462 L7.8423913,2.08413462 Z M7.82901338,4.78125 L7.94941472,8.09134615 C7.94941472,8.14903846 7.92711817,8.19471154 7.88252508,8.22836538 C7.82455407,8.28125 7.77104236,8.30769231 7.72198997,8.30769231 L6.25041806,8.30769231 C6.20136566,8.30769231 6.14785396,8.28125 6.08988294,8.22836538 C6.04528986,8.19471154 6.02299331,8.14423077 6.02299331,8.07692308 L6.13670569,4.78125 C6.13670569,4.73317308 6.15900223,4.69350962 6.20359532,4.66225962 C6.24818841,4.63100962 6.30170011,4.61538462 6.36413043,4.61538462 L7.60158863,4.61538462 C7.66401895,4.61538462 7.71641583,4.63100962 7.75877926,4.66225962 C7.8011427,4.69350962 7.82455407,4.73317308 7.82901338,4.78125 L7.82901338,4.78125 Z M7.73536789,11.5168269 L12.8724916,1.36298077 C13.0285674,1.06009615 13.0241081,0.757211538 12.8591137,0.454326923 C12.7833055,0.314903846 12.6796265,0.204326923 12.5480769,0.122596154 C12.4165273,0.0408653846 12.2749443,0 12.1233278,0 L1.84908027,0 C1.69746377,0 1.55588071,0.0408653846 1.4243311,0.122596154 C1.29278149,0.204326923 1.18910256,0.314903846 1.11329431,0.454326923 C0.948299889,0.757211538 0.94384058,1.06009615 1.09991639,1.36298077 L6.23704013,11.5168269 C6.31284838,11.6658654 6.41764214,11.7836538 6.5514214,11.8701923 C6.68520067,11.9567308 6.83012821,12 6.98620401,12 C7.14227982,12 7.28720736,11.9567308 7.42098662,11.8701923 C7.55476589,11.7836538 7.65955964,11.6658654 7.73536789,11.5168269 L7.73536789,11.5168269 Z"
+                      class="connection-blocked-sign"
+                      >
+
+                </path>
+                <text
+                        class="connection-blocked-text"
+                        >
+                    <tspan y="-10" x="-12">blocked</tspan>
+                </text>
+            </g>
+            <circle
+                    ng-mousedown="connectedConnectorMouseDown($event, connection)"
+                    ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
+                    ng-attr-r="{{connectorSize*1.2}}"
+                    ng-attr-cx="{{connection.sourceCoordX()}}"
+                    ng-attr-cy="{{connection.sourceCoordY()}}"
+                    >
+            </circle>
+            <circle
+                    ng-mousedown="connectedConnectorMouseDown($event, connection)"
+                    ng-attr-class="{{connection.selected() && 'selected-connection-endpoint' || (connection == mouseOverConnection && 'mouseover-connection-endpoint' || 'connection-endpoint')}}"
+                    ng-attr-r="{{connectorSize*1.2}}"
+                    ng-attr-cx="{{connection.destCoordX()}}"
+                    ng-attr-cy="{{connection.destCoordY()}}"
+                    >
+            </circle>
+    </g>
+
+
+    <g
+            ng-if="draggingConnection"
+            >
+        <path
+                class="dragging-connection dragging-connection-line"
+                ng-attr-d="M {{dragPoint1.x}}, {{dragPoint1.y}}
+                 C {{dragTangent1.x}}, {{dragTangent1.y}}
+                   {{dragTangent2.x}}, {{dragTangent2.y}}
+                   {{dragPoint2.x}}, {{dragPoint2.y}}"
+                >
+        </path>
+
+        <circle
+                class="dragging-connection dragging-connection-endpoint"
+                ng-attr-r="{{connectorSize*0.4}}"
+                ng-attr-cx="{{dragPoint1.x}}"
+                ng-attr-cy="{{dragPoint1.y}}"
+                >
+        </circle>
+
+        <circle
+                class="dragging-connection dragging-connection-endpoint"
+                ng-attr-r="{{connectorSize*0.4}}"
+                ng-attr-cx="{{dragPoint2.x}}"
+                ng-attr-cy="{{dragPoint2.y}}"
+                >
+        </circle>
+    </g>
+
+    <rect
+            ng-if="dragSelecting"
+            class="drag-selection-rect"
+            ng-attr-x="{{dragSelectionRect.x}}"
+            ng-attr-y="{{dragSelectionRect.y}}"
+            ng-attr-width="{{dragSelectionRect.width}}"
+            ng-attr-height="{{dragSelectionRect.height}}"
+            stroke-dasharray="10,5"
+            >
+    </rect>
+
+</svg>

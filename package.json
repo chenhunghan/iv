@@ -1,0 +1,22 @@
+{
+  "name": "IntraView",
+  "main": "index.html",
+  "version": "0.1.0",
+  "window": {
+    "title": "IntraView",
+    "toolbar": false,
+    "frame": true,
+    "width": 1200,
+    "height": 650,
+    "position": "mouse",
+    "min_width": 1200,
+    "min_height": 620,
+    "fullscreen": false,
+    "resizable": false
+  },
+  "dependencies": {
+    "insta-syslog": "git+https://github.com/Intrising/insta-syslog"
+  },
+  "devDependencies": {
+  }
+}

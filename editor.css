@@ -1,0 +1,422 @@
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="number"],
+textarea {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+}
+
+.test {
+    border: 5px red solid;
+    padding: 10;
+    margin: 10;
+    font-family: "Times New Roman";
+    font-style: italic;
+}
+
+.chart-controller {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:100;
+}
+
+.node-controller{
+    position: absolute;
+    top: 0;
+    left: 100px;
+}
+/*
+Styles for nodes and connectors.
+*/
+
+.node-rect {
+    stroke: rgba(0,0,0,004);
+    stroke-width: 0.5;
+}
+
+.selected-node-rect {
+    stroke: rgba(255,5,0,0.2);
+    stroke-width: 3;
+}
+
+.mouseover-node-rect {
+    stroke: rgba(0,0,0,0005);
+    stroke-width: 0.2;
+}
+
+.node-name {
+    font-family: "Courier New";
+    font-size: 12px;
+    font-weight: normal;
+    line-spacing: 30;
+    fill: #000000;
+    fill-opacity: 0.5;
+}
+.node-name:hover {
+    fill-opacity:0.8;
+}
+
+.add-connetor-btn-text, .delete-connetor-btn-text{
+    font-family: Arial;
+    font-size: 13px;
+    font-weight: lighter;
+    fill: rgb(100, 184, 275);
+    fill-opacity: 0.5;
+    cursor: pointer;
+}
+
+.add-connetor-btn-text:hover, .delete-connetor-btn-text:hover{
+    fill-opacity:0.8;
+}
+
+.delete-connetor-btn-text {
+    fill: rgb(255, 0, 0);
+}
+/*connector*/
+
+.connector-circle{
+    fill: rgba(255,255,255,1);
+    stroke: rgba(0,0,0,0.1);
+    stroke-width: 1;
+}
+
+.connector-inner-circle{
+    fill: rgba(0,0,0,0.1);
+    stroke: rgba(0,0,0,0.1);
+    stroke-width: 1;
+}
+
+.linkdown-connector-inner-circle {
+    fill: rgba(255,0,0,0.2);
+    stroke: rgba(255,0,0,0.1);
+    stroke-width: 1;
+}
+
+.mouseover-connector-circle{
+    fill: rgba(255,255,255,1);
+    stroke: rgba(0,0,0,0.3);
+    stroke-width: 1;
+}
+
+.connetor-name {
+    font-family: Arial;
+    font-size: 11px;
+    fill: rgba(0,0,0,0.4);
+    text-shadow: 1 1 0px white;
+}
+.connetor-name:hover {
+    fill: rgba(0,0,0,0.7);
+}
+
+/*
+Style for connections.
+*/
+
+.connection {
+}
+
+.connection-line {
+    stroke: rgba(0,0,0,0.5);
+    stroke-width: 2;
+    fill: transparent;
+    z-index:3;
+}
+
+.mouseover-connection-line {
+    stroke: gray;
+    stroke-width: 5;
+    fill: transparent;
+}
+
+.selected-connection-line {
+    stroke: red;
+    stroke-width: 4;
+    fill: transparent;
+}
+
+.connection-endpoint {
+    fill: rgba(0,0,0,0);
+}
+
+.selected-connection-endpoint {
+    fill: rgba(255,0,0,0.05);
+}
+
+.mouseover-connection-endpoint {
+    fill: transparent;
+}
+
+/*
+Style for the connection being dragged out.
+*/
+
+.dragging-connection {
+    pointer-events: none;
+}
+
+.dragging-connection-line {
+    stroke: gray;
+    stroke-width: 3;
+    fill: transparent;
+}
+
+.dragging-connection-endpoint {
+    fill: gray;
+}
+
+/*
+The element (in this case the SVG element) that contains the draggable elements.
+*/
+
+.draggable-container {
+    position: relative;
+    top: 0 px;
+    left: 0px;
+    border: dashed 1px rgba(0,0,0,0);
+}
+
+/*
+Drag selection rectangle.
+*/
+
+.drag-selection-rect {
+    stroke: rgba(255,0,0,0.4);
+    stroke-width: 2;
+    fill: rgba(255,0,0,0.03);
+}
+
+.right-panel{
+    position: absolute;
+    top:1%;
+    left:81%;
+    width: 220px;
+    height: 630px;
+    overflow: auto;
+    overflow-x: hidden;
+    background-color: rgba(255,255,255,0.8);
+    z-index:100;
+}
+
+.right-panel::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 1px rgba(0,0,0,0.2);
+    border-radius: 0px;
+    background-color: #F5F5F5;
+}
+
+.right-panel::-webkit-scrollbar
+{
+    width: 3px;
+    background-color: rgba(115,115,115,0.05);
+}
+
+.right-panel::-webkit-scrollbar-thumb
+{
+    border-radius: 0px;
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.01);
+    background-color: rgba(133,133,133,0.23);
+}
+
+
+.right-panel label{
+    color:rgba(0,0,0,0.3);
+    margin-bottom:10px;
+}
+
+/*
+node list
+*/
+
+.nodelist {
+    padding-left:0px;
+    list-style: none;
+    font-size:12px;
+    color:rgba(0,0,0,0.3);
+    cursor: pointer;
+}
+
+.nodelist:hover{
+    color:rgba(0,0,0,0.6);
+}
+/*
+.nodelistbtn{
+    height:10px;
+    padding:0;
+    margin:0;
+    font-size: 8px;
+}
+.nodelistbtn:focus {
+    outline: rgba(0,0,0,0) none;
+}
+
+.nodelist:hover {
+    color:rgba(0,0,0,0.8);
+}
+*/
+
+.testbtns {
+    list-style: none;
+    font-size:12px;
+    margin-top:15px;
+    padding-left:0px;
+}
+
+.testbtns:before {
+    opacity: 0.5;
+    content:"testing effects"
+}
+
+.syslog-list {
+    font-size:12px;
+    color:rgba(0,0,0,0.3);
+}
+
+.syslog-list:hover{
+    color:rgba(0,0,0,0.8)
+}
+
+/*status*/
+
+.node-status-sign {
+}
+
+.node-warning-sign {
+    opacity: 1;
+    fill: rgba(255,120,0,1);
+    -webkit-transform: translate(-18px, -20px) scale(1,1);
+}
+
+.node-alive-sign {
+    opacity: 0.25;
+    fill: rgba(0,225,40,1);
+    -webkit-transform: translate(-18px, -3px) scale(1,1);
+}
+.node-dead-sign {
+    opacity: 0.8;
+    fill: #FF0000;
+    -webkit-transform: translate(-18px, -3px) scale(1,1);
+    -webkit-animation: node-dead-blink;
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-iteration-count: 20;
+}
+
+@-webkit-keyframes node-warning-blink {
+    0% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
+
+@-webkit-keyframes node-dead-blink {
+    0% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
+
+.connection-dead {
+    stroke: rgba(200,0,0,0.8);
+    stroke-opacity: 1;
+    stroke-width: 1.5;
+    stroke-dasharray: 2;
+    fill: transparent;
+    -webkit-animation: connection-dead-sign-blink;
+    -webkit-animation-duration: 2s;
+    -webkit-animation-iteration-count: infinite;
+}
+
+.connection-dead-sign {
+    fill: rgba(255,0,0,0.3);
+    -webkit-transform: scale(2,2);
+    -webkit-animation: connection-dead-sign-blink;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+}
+
+.connection-dead-text {
+    font-size:11.5px;
+    font-family: Arial;
+    fill: rgba(200,0,0,0.6);
+    -webkit-animation: connection-dead-sign-blink;
+    -webkit-animation-duration: 1s;
+    -webkit-animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes connection-dead-sign-blink {
+    0% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0.2;
+    }
+}
+
+.connection-blocked-text {
+    font-size:11px;
+    font-family: Arial;
+    fill: rgba(250,90,0,0.6);
+}
+
+.connection-blocked-sign {
+    fill: rgba(255,90,0,0.5);
+}
+
+/*Timeline*/
+
+.timeline-wrap{
+    position: absolute;
+    top:70%;
+    width:952px;
+    height:160px;
+    margin-left:10px;
+    background-color: rgba(255,255,255,0.7);
+}
+
+.timeline-controller-wrapper {
+    margin: 0px 0 0px 0px;
+}
+
+.time-btn {
+    padding: 0;
+}
+
+.time-text {
+    font-family: monospace, serif;
+    font-size: 11px;
+    background-color: transparent;
+}
+.timeline-controller-wrapper label{
+    color:rgba(0,0,0,0.3);
+    font-size: 12px;
+    padding-right:15px;
+    margin-left:12px;
+}
+.timeline-controller-wrapper input[type="text"]{
+    margin-left:-10px;
+    width: 65px;
+    border: 0px;
+}
+
+.label-time {
+    background-color: transparent;
+    color: rgba(0,0,0,0.2)
+}
